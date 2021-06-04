@@ -2,11 +2,11 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
-    contractInstance:null
+    contractInstance: null,
   },
   mutations: {
-    setContractInstance(state,payload){
-      state.contractInstance=payload
+    setContractInstance(state,payload) {
+      state.contractInstance = payload
     }
   },
   actions: {

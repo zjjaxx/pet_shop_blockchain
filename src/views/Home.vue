@@ -39,7 +39,6 @@
 import { onMounted, ref } from "vue";
 import { getPets } from "../api/api";
 import { useStore } from "vuex";
-import contructApp from "../contruct/app";
 export default {
   setup() {
     const petList = ref([]);
@@ -48,23 +47,17 @@ export default {
       const adopters = await store.state.contractInstance.getAdopters.call();
       adopters.forEach((element, index) => {
         if (adopters[index] !== "0x0000000000000000000000000000000000000000") {
+          console.log("trigger", index);
           petList.value[index].status = true;
         }
       });
     };
     const adopt = async (id) => {
-      contructApp.web3Instance.eth.getAccounts(async function (
-        error,
-        accounts
-      ) {
-        if (error) {
-          console.log(error);
-        }
-        console.log("accounts is", accounts);
-        const account = accounts[0];
-        await store.state.contractInstance.adopt(id, { from: account });
-        await mapAdoptersStatus();
+      console.log("store.state.contractInstance",store.state.contractInstance)
+      await store.state.contractInstance.adopt(id, {
+        from: store.state.contractInstance.eth.accounts[0],
       });
+      await mapAdoptersStatus();
     };
     onMounted(async () => {
       petList.value = (await getPets()).data;

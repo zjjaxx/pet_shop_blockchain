@@ -30,6 +30,8 @@ class ContructManager {
             console.log("ha ha --!")
             web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
         }
+
+        // this.web3Instance = new Web3(Web3.givenProvider || "ws://localhost:8545");;
         this.web3Instance = new Web3(web3Provider);
         return await this.initContract();
     }

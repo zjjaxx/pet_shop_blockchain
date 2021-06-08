@@ -1,16 +1,17 @@
 import Web3 from 'web3';
 import { getContract } from "../api/api"
+import globalConfig from "../config"
 class ContructManager {
     web3Instance = null
-    web3Provider = null
     contracts = {}
     async init() {
         return await this.initWeb3();
     }
     async initWeb3() {
+        let web3Provider
         if (window.ethereum) {
             console.log("window.ethereum exsit")
-            this.web3Provider = window.ethereum;
+            web3Provider = window.ethereum;
             try {
                 // Request account access
                 await window.ethereum.enable();
@@ -21,26 +22,22 @@ class ContructManager {
         }
         // Legacy dapp browsers...
         else if (window.web3) {
-            console.log("window.web3 exsit",window.web3.isConnected)
-            this.web3Provider = window.web3.currentProvider;
+            console.log("window.web3 exsit")
+            web3Provider = window.web3.currentProvider;
         }
         // If no injected web3 instance is detected, fall back to Ganache
         else {
             console.log("ha ha --!")
-            this.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
+            web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
         }
-        this.web3Instance = new Web3(this.web3Provider);
+        this.web3Instance = new Web3(web3Provider);
         return await this.initContract();
     }
 
     async initContract() {
         const data = (await getContract()).data
-        var AdoptionArtifact = data;
-        this.contracts.Adoption = TruffleContract(AdoptionArtifact);
-        // Set the provider for our contract
-        this.contracts.Adoption.setProvider(this.web3Provider);
-        const instance =await this.contracts.Adoption.deployed();
-        return instance
+        var contractInstance = new this.web3Instance.eth.Contract(data.abi,globalConfig.contractAddress);
+        return contractInstance
     }
 }
 

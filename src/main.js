@@ -12,7 +12,9 @@ const start = async () => {
     const contructManager = new ContructManager()
     try {
         const instance = await contructManager.init();
+        const accounts=await contructManager.web3Instance.eth.getAccounts()
         store.commit("setContractInstance", instance)
+        store.commit("setAccount",accounts[0])
     } catch (error) {
         console.log("error", error)
     }

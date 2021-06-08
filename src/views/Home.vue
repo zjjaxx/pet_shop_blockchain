@@ -44,18 +44,16 @@ export default {
     const petList = ref([]);
     const store = useStore();
     const mapAdoptersStatus = async () => {
-      const adopters = await store.state.contractInstance.getAdopters.call();
+      const adopters = await await store.state.contractInstance.methods.getAdopters().call()
       adopters.forEach((element, index) => {
         if (adopters[index] !== "0x0000000000000000000000000000000000000000") {
-          console.log("trigger", index);
           petList.value[index].status = true;
         }
       });
     };
     const adopt = async (id) => {
-      console.log("store.state.contractInstance",store.state.contractInstance)
-      await store.state.contractInstance.adopt(id, {
-        from: store.state.contractInstance.eth.accounts[0],
+      await store.state.contractInstance.methods.adopt(id).send({
+        from: store.state.account,
       });
       await mapAdoptersStatus();
     };

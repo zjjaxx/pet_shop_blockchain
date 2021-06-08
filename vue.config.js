@@ -10,9 +10,9 @@ if (isProd) {
     //   analyzerPort: 8889,
     //   openAnalyzer: false,
     // }),//打包分析
-    new webpack.ProvidePlugin({
-      TruffleContract: "@truffle/contract"
-    }),
+    // new webpack.ProvidePlugin({
+    //   TruffleContract: "@truffle/contract"
+    // }),
     new CompressionPlugin({
       algorithm: 'gzip',
       test: /\.(js|css)$/,// 匹配文件名
@@ -24,9 +24,9 @@ if (isProd) {
 }
 else {
   _plugins = [
-    new webpack.ProvidePlugin({
-      TruffleContract: "@truffle/contract"
-    }),
+    // new webpack.ProvidePlugin({
+    //   TruffleContract: "@truffle/contract"
+    // }),
   ]
 }
 module.exports = {
